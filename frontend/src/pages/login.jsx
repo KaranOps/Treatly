@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../api/axios";
+import axios from 'axios';
+
+const baseURL = import.meta.env.VITE_API_URL;
+
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
@@ -13,14 +16,14 @@ const Login = ({ onLogin }) => {
     setError("");
     try {
       const res = await axios.post(
-        "/api/user/login",
+        `${baseURL}/api/user/login`,
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );
       localStorage.setItem("token", res.data.token);
       if (onLogin) onLogin(res.data.token);
       // Redirect to dashboard
-      navigate("/dashboard");
+      navigate("/");
     } catch (err) {
       setError(
         err.response?.data?.message || "Login failed. Please try again."

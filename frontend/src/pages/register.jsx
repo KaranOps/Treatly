@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import axios from "../api/axios";
+import axios from 'axios'
 import { useNavigate } from "react-router-dom";
+
+const baseURL = import.meta.env.VITE_API_URL;
+
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -16,13 +19,13 @@ const Signup = () => {
     setSuccess(false);
     try {
       await axios.post(
-        "/api/user/register",
+        `${baseURL}/api/user/register`,
         { name, email, password },
         { headers: { "Content-Type": "application/json" } }
       );
       setSuccess(true);
       // Optionally redirect to login
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       setError(
         err.response?.data?.message || "Signup failed. Please try again."
