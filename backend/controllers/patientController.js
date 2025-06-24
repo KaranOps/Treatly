@@ -1,3 +1,4 @@
+const fs = require('fs');
 const Case = require('../models/case');
 const File = require('../models/file');
 
@@ -127,3 +128,31 @@ exports.uploadFile = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
+
+// controllers/fileController.js
+exports.deleteFile = async (req, res) => {
+  try {
+    const { caseId, fileId } = req.params;
+    const userId = req.user.id;
+
+    // Find the file
+    const file = await File.findById(fileId);
+    if (!file) return res.status(404).json({ message: 'File not found' });
+
+    // Remove file reference from case
+    await Case.findByIdAndUpdate(caseId, { $pull: { files: fileId } });
+
+    // Delete the file from disk
+    fs.unlink(file.path, (err) => {
+      if (err) console.error('File deletion error:', err); // Log but continue
+    });
+
+    // Remove file document from DB
+    await File.findByIdAndDelete(fileId);
+
+    res.json({ message: 'File deleted successfully', fileId });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting file', error: err.message });
+  }
+};
+

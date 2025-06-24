@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.10",
+    "@uiw/react-json-view": "^2.0.0-alpha.32",
     "axios": "^1.10.0",
+    "json-view-react": "^1.1.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-json-view-lite": "^2.4.1",
     "react-router-dom": "^7.6.2",
     "tailwindcss": "^4.1.10"
   },

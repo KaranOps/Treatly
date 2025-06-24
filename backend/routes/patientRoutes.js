@@ -8,6 +8,7 @@ const upload = require('../middleware/upload');
 router.post('/case', auth, upload.array('files'), patientController.createCase);
 router.get('/cases', auth, patientController.getCases);
 router.get('/case/:caseId', auth, patientController.getPatientDetails);
+router.delete('/case/:caseId/files/:fileId', auth, patientController.deleteFile);
 // router.get('/patient-ids', auth, patientController.getAllPatientIds);
 
 // File upload for a case

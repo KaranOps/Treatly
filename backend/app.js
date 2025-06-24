@@ -6,6 +6,7 @@ const connectDB = require('./config/db');
 //Routes
 const userRoutes = require('./routes/userRoutes');
 const caseRoutes = require('./routes/patientRoutes');
+const aiRoutes = require("./routes/aiRoutes");
 
 
 const app = express();
@@ -19,6 +20,8 @@ connectDB();
 
 app.use('/api/user', userRoutes);
 app.use('/api', caseRoutes);
+app.use("/api", aiRoutes);
+
 app.get('/',(req,res)=>{
     res.send("Treatly");
     console.log("Treatly");
