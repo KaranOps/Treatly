@@ -5,12 +5,12 @@ const patientController = require('../controllers/patientController');
 const upload = require('../middleware/upload');
 
 // Patient case CRUD
-router.post('/case', auth, patientController.createCase);
+router.post('/case', auth, upload.array('files'), patientController.createCase);
 router.get('/cases', auth, patientController.getCases);
-router.get('/case/:patientId', auth, patientController.getPatientDetails);
+router.get('/case/:caseId', auth, patientController.getPatientDetails);
 // router.get('/patient-ids', auth, patientController.getAllPatientIds);
 
 // File upload for a case
-router.post('/case/:caseId/files', auth, upload.single('file'), patientController.uploadFile);
+router.post('/case/:caseId/files', auth, upload.array('files'), patientController.uploadFile);
 
 module.exports = router;
