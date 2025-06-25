@@ -14,6 +14,8 @@
     "@uiw/react-json-view": "^2.0.0-alpha.32",
     "axios": "^1.10.0",
     "json-view-react": "^1.1.1",
+    "jspdf": "^3.0.1",
+    "lucide-react": "^0.523.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-json-view-lite": "^2.4.1",

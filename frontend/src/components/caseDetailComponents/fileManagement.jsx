@@ -43,7 +43,7 @@ const fileManagement = ({ files, handleFileUpload, handleFileChange, handleDelet
     </div>
 
     {/* Upload Form */}
-    <form onSubmit={handleFileUpload} className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-purple-400 transition-colors">
+    <form onSubmit={handleFileUpload} className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-[#754579] transition-colors">
       <div className="text-center">
         <span className="text-4xl mb-4 block">📤</span>
         <h4 className="text-lg font-medium text-gray-700 mb-2">Upload New File</h4>
@@ -57,7 +57,7 @@ const fileManagement = ({ files, handleFileUpload, handleFileChange, handleDelet
           />
           <button
             type="submit"
-            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium cursor-pointer transition-colors whitespace-nowrap"
+            className="bg-[#754579] hover:bg-[#3f2441] text-white px-6 py-2 rounded-lg font-medium cursor-pointer transition-colors whitespace-nowrap"
           >
             Add to Case
           </button>

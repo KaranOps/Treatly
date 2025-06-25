@@ -16,7 +16,7 @@ const patientInfoCard = ({ caseData, summary, setSummary, onSaveSummary }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-6 border-l-4 border-purple-500">
+    <div className="bg-white rounded-lg shadow-md p-6 mb-6 border-l-4 border-[#754579]">
       <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
         <span className="bg-purple-100 p-2 rounded-full mr-3">
           👤

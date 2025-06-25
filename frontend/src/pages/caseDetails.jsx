@@ -6,12 +6,12 @@ import 'react-json-view-lite/dist/index.css';
 const baseURL = import.meta.env.VITE_API_URL;
 
 // Import components
-import PatientHeader from '../components/patientHeader'
-import ErrorAlert from '../components/errorAlert'
-import PatientInfoCard from '../components/patientInfoCard'
-import FileManagement from '../components/fileManagement'
-import AIAnalysisForm from '../components/aIAnalysisForm'
-import AIResults from '../components/aIResults'
+import PatientHeader from '../components/caseDetailComponents/patientHeader'
+import ErrorAlert from '../components/caseDetailComponents/errorAlert'
+import PatientInfoCard from '../components/caseDetailComponents/patientInfoCard'
+import FileManagement from '../components/caseDetailComponents/fileManagement'
+import AIAnalysisForm from '../components/caseDetailComponents/aIAnalysisForm'
+import AIResults from '../components/caseDetailComponents/aIResults'
 
 const CaseDetails = () => {
   const { caseId } = useParams();
@@ -155,7 +155,9 @@ const CaseDetails = () => {
       setError("AI processing failed: " + (err.response?.data?.message || err.message));
     }
   };
-
+  const handleGoBack = () => {
+    navigate("/");
+  };
 
   if (loading) {
     return (
@@ -171,6 +173,15 @@ const CaseDetails = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="mb-6">
+          <button
+            onClick={handleGoBack}
+            className="flex items-center text-[#b46aba] hover:text-[#754579] font-medium transition-colors duration-200 cursor-pointer"
+          >
+            <span className="mr-2">←</span>
+            Back to Dashboard
+          </button>
+        </div>
         <PatientHeader 
           caseData={caseData}
            />

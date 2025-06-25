@@ -32,7 +32,7 @@ const aIAnalysisForm = ({
 
       <button
         type="submit"
-        className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-[1.02] cursor-pointer shadow-lg"
+        className="w-full bg-gradient-to-r from-[#754579] to-[#b169b8] hover:from-[#522457] hover:to-[#7e4383] text-white py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-[1.02] cursor-pointer shadow-lg"
       >
         🔍 Process with AI
       </button>
