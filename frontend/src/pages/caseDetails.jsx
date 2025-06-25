@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { JsonView, defaultStyles } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
 
 const baseURL = import.meta.env.VITE_API_URL;
+
+// Import components
+import PatientHeader from '../components/patientHeader'
+import ErrorAlert from '../components/errorAlert'
+import PatientInfoCard from '../components/patientInfoCard'
+import FileManagement from '../components/fileManagement'
+import AIAnalysisForm from '../components/aIAnalysisForm'
+import AIResults from '../components/aIResults'
 
 const CaseDetails = () => {
   const { caseId } = useParams();
@@ -13,13 +20,13 @@ const CaseDetails = () => {
   const [aiOutput, setAiOutput] = useState(null);
   const [fileToUpload, setFileToUpload] = useState(null);
   const [error, setError] = useState("");
-  const token = localStorage.getItem("token");
-
-  // Add missing state variables
   const [summary, setSummary] = useState("");
   const [command, setCommand] = useState("");
-  const [newFiles, setNewFiles] = useState([]); // For AI form files
-  const navigate = useNavigate()
+  const [newFiles, setNewFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -30,24 +37,33 @@ const CaseDetails = () => {
 
   useEffect(() => {
     if (!token) return;
+    
     const fetchCase = async () => {
       try {
+        setLoading(true);
         const res = await axios.get(`${baseURL}/api/case/${caseId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        // if(!res) navigate('/login')
+        
         setCaseData(res.data.patient || res.data.case);
         setFiles(res.data.patient?.files || []);
         setAiOutput(res.data.patient?.aiOutput || null);
 
-        // Pre-fill summary with existing case data
         if (res.data.patient?.summary) {
           setSummary(res.data.patient.summary);
         }
       } catch (err) {
+        if (err.response?.status === 401 || err.response?.status === 403) {
+        localStorage.removeItem("token");
+        navigate('/login');
+        return;
+        }
         setError("Failed to load case details.");
+      } finally {
+        setLoading(false);
       }
     };
+    
     fetchCase();
   }, [caseId, token]);
 
@@ -55,16 +71,29 @@ const CaseDetails = () => {
     setFileToUpload(e.target.files[0]);
   };
 
-  // For AI form file selection
   const handleNewFileChange = (e) => {
     setNewFiles(Array.from(e.target.files));
   };
 
+  const handleSaveSummary = async (newSummary) => {
+  // API call to save summary to backend
+  try {
+    await axios.put(`${baseURL}/api/case/${caseId}/summary`, 
+      { summary: newSummary },
+      { headers: { Authorization: `Bearer ${token}` }}
+    );
+  } catch (err) {
+    setError("Failed to save summary");
+  }
+};
+
   const handleFileUpload = async (e) => {
     e.preventDefault();
     if (!fileToUpload) return;
+    
     const formData = new FormData();
     formData.append("file", fileToUpload);
+    
     try {
       await axios.post(
         `${baseURL}/api/case/${caseId}/files`,
@@ -81,34 +110,31 @@ const CaseDetails = () => {
       setError("File upload failed.");
     }
   };
-  //Delete the files
+
   const handleDeleteFile = async (fileId, event) => {
     event.stopPropagation();
-    if (window.confirm("Delete the student?")) {
+    if (window.confirm("Are you sure you want to delete this file?")) {
       try {
-        const res = await axios.delete(
+        await axios.delete(
           `${baseURL}/api/case/${caseId}/files/${fileId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        // Remove the file from UI
         setFiles(files.filter(f => f._id !== fileId));
       } catch (err) {
-        console.error(err.message)
+        console.error(err.message);
         setError("Failed to delete file.");
       }
     }
   };
 
-  // --- AI Agent Integration ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    
     const formData = new FormData();
-
     if (summary) formData.append("summary", summary);
     if (command) formData.append("command", command);
 
-    // Add new files from AI form
     newFiles.forEach((file) => {
       formData.append("files", file);
     });
@@ -130,125 +156,49 @@ const CaseDetails = () => {
     }
   };
 
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading patient case...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-2xl mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-4">Patient Case Details</h2>
-      {error && <div className="text-red-500">{error}</div>}
-
-      {caseData && (
-        <div className="mb-6">
-          <div><strong>Patient ID:</strong> {caseData.patientId}</div>
-          <div><strong>Summary:</strong> {caseData.summary}</div>
-        </div>
-      )}
-
-      <div className="mb-6">
-        <h3 className="font-semibold mb-2">Uploaded Files</h3>
-        <ul className="list-disc pl-5">
-          {files.map((file) => (
-            <li key={file._id} className="mb-1">
-              <a
-                href={`${baseURL}/${file.path}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
-              >
-                {file.originalName}
-              </a>
-              <button
-                onClick={(e) => handleDeleteFile(file._id, e)}
-                className="text-red-600 hover:underline"
-                title="Delete file"
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        <form onSubmit={handleFileUpload} className="mt-4 flex items-center">
-          <input
-            type="file"
-            onChange={handleFileChange}
-            className="flex-grow"
-          />
-          <button
-            type="submit"
-            className="ml-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Add to Case
-          </button>
-        </form>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+        <PatientHeader 
+          caseData={caseData}
+           />
+        
+        <ErrorAlert error={error} />
+        
+        {caseData && <PatientInfoCard 
+          caseData={caseData}
+          summary={summary}
+          setSummary={setSummary}
+          onSaveSummary={handleSaveSummary} />}
+        
+        <FileManagement 
+          files={files}
+          handleFileUpload={handleFileUpload}
+          handleFileChange={handleFileChange}
+          handleDeleteFile={handleDeleteFile}
+          baseURL={baseURL}
+        />
+        
+        <AIAnalysisForm 
+          command={command}
+          setCommand={setCommand}
+          handleSubmit={handleSubmit}
+        />
+        
+        {aiOutput && <AIResults aiOutput={aiOutput} />}
       </div>
-
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <h2 className="text-xl font-bold mb-4">AI Analysis Request</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block mb-1 font-medium">Case Summary:</label>
-            <textarea
-              placeholder="Update or add to the case summary"
-              value={summary}
-              onChange={e => setSummary(e.target.value)}
-              className="w-full border rounded px-3 py-2 min-h-[100px]"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-1 font-medium">Upload Additional Files:</label>
-            <input
-              type="file"
-              multiple
-              onChange={handleNewFileChange}
-              className="w-full"
-              accept=".csv,.pdf,.jpg,.jpeg,.png,.dcm"
-            />
-            <p className="text-sm text-gray-500 mt-1">
-              Lab reports or images for AI analysis
-            </p>
-          </div>
-
-          <div>
-            <label className="block mb-1 font-medium">AI Command:</label>
-            <input
-              type="text"
-              placeholder="e.g., 'Show yesterday's CBC for patient 12345'"
-              value={command}
-              onChange={e => setCommand(e.target.value)}
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
-          >
-            Process with AI
-          </button>
-        </form>
-      </div>
-
-      {aiOutput && (
-        <div className="mt-8">
-          <h3 className="text-xl font-bold mb-3">AI Results</h3>
-          <div className="bg-white border rounded-lg p-4">
-            <JsonView
-              data={aiOutput}
-              style={defaultStyles}
-              shouldExpandNode={(level) => level < 1}
-            />
-          </div>
-
-          <div className="mt-4 flex space-x-3">
-            <button className="bg-green-500 text-white px-4 py-2 rounded flex items-center">
-              <span className="mr-1">👍</span> Helpful
-            </button>
-            <button className="bg-red-500 text-white px-4 py-2 rounded flex items-center">
-              <span className="mr-1">👎</span> Not Helpful
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

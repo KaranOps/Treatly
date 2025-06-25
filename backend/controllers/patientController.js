@@ -4,7 +4,7 @@ const File = require('../models/file');
 
 // Create a new patient case
 exports.createCase = async (req, res) => {
-    try {
+  try {
     const { patientId, summary } = req.body;
     const userId = req.user.id;
     const files = req.files || []; // Get uploaded files
@@ -16,7 +16,7 @@ exports.createCase = async (req, res) => {
       // Update existing case
       existingCase.summary = summary;
       await existingCase.save();
-      
+
       // Add new files to existing case
       const newFiles = await processFiles(files, existingCase._id, userId);
       existingCase.files.push(...newFiles);
@@ -34,11 +34,11 @@ exports.createCase = async (req, res) => {
         summary,
         files: []
       });
-      
+
       // Add files to new case
       const newFiles = await processFiles(files, newCase._id, userId);
       newCase.files = newFiles;
-      
+
       await newCase.save();
       return res.status(201).json({
         message: 'New patient case created with files',
@@ -52,82 +52,111 @@ exports.createCase = async (req, res) => {
 
 // Get all cases for the logged-in user
 exports.getCases = async (req, res) => {
-    try {
-        const userId = req.user.id; // Fixed: was req.user.userId
-        const cases = await Case.find({ user: userId }).populate('files'); // Fixed: was Case.find({})
-        res.json({
-            message: 'All cases retrieved successfully',
-            cases: cases,
-            count: cases.length
-        });
-    } catch (err) {
-        res.status(500).json({ message: 'Server error', error: err.message });
-    }
+  try {
+    const userId = req.user.id; // Fixed: was req.user.userId
+    const cases = await Case.find({ user: userId }).populate('files'); // Fixed: was Case.find({})
+    res.json({
+      message: 'All cases retrieved successfully',
+      cases: cases,
+      count: cases.length
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
 };
 
 // Get one patient details by patientId for the logged-in user
 exports.getPatientDetails = async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const caseId = req.params.caseId;
+  try {
+    const userId = req.user.id;
+    const caseId = req.params.caseId;
 
-        const patientCase = await Case.findOne({ _id: caseId, user: userId }).populate('files');
-        if (!patientCase) {
-            return res.status(404).json({ message: 'Patient case not found' });
-        }
-        res.json({
-            message: 'Patient details retrieved successfully',
-            patient: patientCase
-        });
-    } catch (err) {
-        res.status(500).json({ message: 'Server error', error: err.message });
+    const patientCase = await Case.findOne({ _id: caseId, user: userId }).populate('files');
+    if (!patientCase) {
+      return res.status(404).json({ message: 'Patient case not found' });
     }
+    res.json({
+      message: 'Patient details retrieved successfully',
+      patient: patientCase
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
 };
 
-  // Helper function to process uploaded files
-  const processFiles= async(files, caseId, userId)=> {
-    const fileDocuments = [];
-    
-    for (const file of files) {
-      const newFile = new File({
-        case: caseId,
-        user: userId,
-        type: file.mimetype.startsWith('image') ? 'image' : 'lab', // Detect file type
-        path: file.path,
-        originalName: file.originalname
-      });
-      
-      await newFile.save();
-      fileDocuments.push(newFile._id);
+// Update the summary of a patient case
+exports.updateCaseSummary = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const caseId = req.params.caseId;
+    const { summary } = req.body;
+
+    if (!summary || summary.trim() === "") {
+      return res.status(400).json({ message: "Summary cannot be empty." });
     }
-    
-    return fileDocuments;
+
+    // Find the case and ensure it belongs to the logged-in user
+    const patientCase = await Case.findOne({ _id: caseId, user: userId });
+    if (!patientCase) {
+      return res.status(404).json({ message: "Case not found or unauthorized." });
+    }
+
+    // Update and save the summary
+    patientCase.summary = summary;
+    await patientCase.save();
+
+    res.status(200).json({
+      message: "Summary updated successfully.",
+      case: patientCase
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
   }
-  exports.uploadFile = async (req, res) => {
-    try {
-      const userId = req.user.id;
-      const caseId = req.params.caseId;
-      const files = req.files || [];
-      
-      // Verify case exists and belongs to user
-      const existingCase = await Case.findOne({ _id: caseId, user: userId });
-      if (!existingCase) {
-        return res.status(404).json({ message: 'Case not found or unauthorized' });
-      }
-      
-      // Process and add files
-      const newFiles = await processFiles(files, caseId, userId);
-      existingCase.files.push(...newFiles);
-      await existingCase.save();
-      
-      res.status(201).json({
-        message: 'Files added to case successfully',
-        case: existingCase
-      });
-    } catch (err) {
-      res.status(500).json({ message: 'Server error', error: err.message });
+};
+// Helper function to process uploaded files
+const processFiles = async (files, caseId, userId) => {
+  const fileDocuments = [];
+
+  for (const file of files) {
+    const newFile = new File({
+      case: caseId,
+      user: userId,
+      type: file.mimetype.startsWith('image') ? 'image' : 'lab', // Detect file type
+      path: file.path,
+      originalName: file.originalname
+    });
+
+    await newFile.save();
+    fileDocuments.push(newFile._id);
+  }
+
+  return fileDocuments;
+}
+exports.uploadFile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const caseId = req.params.caseId;
+    const files = req.files || [];
+
+    // Verify case exists and belongs to user
+    const existingCase = await Case.findOne({ _id: caseId, user: userId });
+    if (!existingCase) {
+      return res.status(404).json({ message: 'Case not found or unauthorized' });
     }
-  };
+
+    // Process and add files
+    const newFiles = await processFiles(files, caseId, userId);
+    existingCase.files.push(...newFiles);
+    await existingCase.save();
+
+    res.status(201).json({
+      message: 'Files added to case successfully',
+      case: existingCase
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
 
 // controllers/fileController.js
 exports.deleteFile = async (req, res) => {
