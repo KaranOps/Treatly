@@ -15,7 +15,7 @@ const Dashboard = () => {
         const res = await axios.get(`${baseURL}/api/cases`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        setCases(res.data.cases || res.data); // adapt to your API shape
+        setCases(res.data.cases || res.data); 
       } catch (err) {
         setError("Failed to load cases.");
       }

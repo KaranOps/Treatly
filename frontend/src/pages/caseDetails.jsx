@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { JsonView, defaultStyles } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
 
@@ -19,13 +19,23 @@ const CaseDetails = () => {
   const [summary, setSummary] = useState("");
   const [command, setCommand] = useState("");
   const [newFiles, setNewFiles] = useState([]); // For AI form files
+  const navigate = useNavigate()
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
 
   useEffect(() => {
+    if (!token) return;
     const fetchCase = async () => {
       try {
         const res = await axios.get(`${baseURL}/api/case/${caseId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        // if(!res) navigate('/login')
         setCaseData(res.data.patient || res.data.case);
         setFiles(res.data.patient?.files || []);
         setAiOutput(res.data.patient?.aiOutput || null);
@@ -72,16 +82,20 @@ const CaseDetails = () => {
     }
   };
   //Delete the files
-  const handleDeleteFile = async (fileId) => {
-    try {
-      await axios.delete(
-        `${baseURL}/case/${caseId}/files/${fileId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      // Remove the file from UI
-      setFiles(files.filter(f => f._id !== fileId));
-    } catch (err) {
-      setError("Failed to delete file.");
+  const handleDeleteFile = async (fileId, event) => {
+    event.stopPropagation();
+    if (window.confirm("Delete the student?")) {
+      try {
+        const res = await axios.delete(
+          `${baseURL}/api/case/${caseId}/files/${fileId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        // Remove the file from UI
+        setFiles(files.filter(f => f._id !== fileId));
+      } catch (err) {
+        console.error(err.message)
+        setError("Failed to delete file.");
+      }
     }
   };
 
@@ -142,7 +156,7 @@ const CaseDetails = () => {
                 {file.originalName}
               </a>
               <button
-                onClick={() => handleDeleteFile(file._id)}
+                onClick={(e) => handleDeleteFile(file._id, e)}
                 className="text-red-600 hover:underline"
                 title="Delete file"
               >
@@ -221,7 +235,7 @@ const CaseDetails = () => {
             <JsonView
               data={aiOutput}
               style={defaultStyles}
-              shouldinitiallyexpand={(level) => level < 1}
+              shouldExpandNode={(level) => level < 1}
             />
           </div>
 

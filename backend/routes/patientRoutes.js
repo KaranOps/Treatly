@@ -12,6 +12,6 @@ router.delete('/case/:caseId/files/:fileId', auth, patientController.deleteFile)
 // router.get('/patient-ids', auth, patientController.getAllPatientIds);
 
 // File upload for a case
-router.post('/case/:caseId/files', auth, upload.array('files'), patientController.uploadFile);
+router.post('/case/:caseId/files', auth, upload.any('files'), patientController.uploadFile);
 
 module.exports = router;

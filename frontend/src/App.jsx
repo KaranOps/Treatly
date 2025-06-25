@@ -4,7 +4,7 @@ import Login from './pages/login'
 import Signup from './pages/register'
 import Dashboard from './pages/dashboard';
 import CaseDetails from "./pages/caseDetails";
-import AddOrUpdateCase from "./pages/addOrUpdateCase";
+import AddOrUpdateCase from "./components/addOrUpdateCase";
 import PrivateRoute from "./components/PrivateRoute";
 
 const App = () => {

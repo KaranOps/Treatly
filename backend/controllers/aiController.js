@@ -1,10 +1,9 @@
-// controllers/aiController.js
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const csv = require("csv-parser");
 const fs = require("fs");
 const pdfParse = require("pdf-parse");
 
-// Helper: Parse CSV lab files to JSON
+// Parse CSV lab files to JSON
 async function parseLabCSV(filePath) {
   return new Promise((resolve, reject) => {
     const results = [];
@@ -16,14 +15,14 @@ async function parseLabCSV(filePath) {
   });
 }
 
-// Helper: Parse PDF lab files to text
+// Parse PDF lab files to text
 async function parseLabPDF(filePath) {
   const dataBuffer = fs.readFileSync(filePath);
   const data = await pdfParse(dataBuffer);
   return data.text;
 }
 
-// Helper: Build prompt dynamically
+// Build prompt dynamically
 function buildPrompt({ summary, labData, imageInfo, command }) {
   let prompt = "";
   if (summary) prompt += `Patient summary: ${summary}\n`;
