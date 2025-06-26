@@ -17,13 +17,14 @@
 
 </div>
 
+- **Demo Video:** [Click](https://youtu.be/emnshwGmwjk?si=85nun53j5JAb3-ik) 
 ## 🎯 Overview
 
 **Treatly** is a multimodal clinical insight assistant designed to revolutionize how doctors interact with patient data. By combining text summaries, lab reports (CSV/PDF), and medical images (JPG/PNG/DICOM), Treatly leverages Google Gemini AI to provide comprehensive clinical insights including SOAP notes, differential diagnoses, and treatment recommendations.
 
 ### Key Capabilities
 
-- **📝 Case Summary Capture**: Type or dictate patient case summaries
+- **📝 Case Summary Capture**: Type patient case summaries
 - **📊 Lab Report Analysis**: Upload and process CSV/PDF lab reports
 - **🖼️ Medical Image Processing**: Handle radiology images (JPG/PNG/DICOM)
 - **🎤 Voice Commands**: Request information via spoken commands
@@ -38,12 +39,11 @@
 - **Differential Diagnoses**: AI-suggested potential diagnoses
 - **Treatment Recommendations**: Evidence-based treatment suggestions
 - **Confidence Scoring**: AI confidence metrics for clinical decisions
-- **Per-file Interpretations**: Individual analysis of uploaded documents
 
 ### 🛠️ Technical Features
 - **Speech-to-Text**: Native Web Speech API integration for voice commands
 - **Real-time Processing**: Live transcript display during voice input
-- **File Management**: Upload, view, and delete patient files
+- **File Management**: Upload and delete patient files
 - **Responsive Design**: Works seamlessly across desktop and mobile devices
 - **Secure Authentication**: JWT-based user authentication
 - **Component Architecture**: Modular React components for maintainability
@@ -52,7 +52,6 @@
 - **User Isolation**: Each doctor sees only their own cases
 - **Secure File Storage**: Protected file upload and storage system
 - **Authentication Middleware**: Protected API endpoints
-- **CORS Configuration**: Proper cross-origin resource sharing setup
 
 
 ## 🚀 Tech Stack
@@ -80,9 +79,9 @@
   - `csv-parser` - CSV file parsing
   - `pdf-parse` - PDF text extraction
 
-### Deployment
+<!-- ### Deployment
 - **Render** - Cloud platform for both frontend and backend
-- **MongoDB Atlas** - Cloud database hosting
+- **MongoDB Atlas** - Cloud database hosting -->
 
 ## 🛠️ Installation
 
