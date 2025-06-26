@@ -16,7 +16,9 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
-await connectDB();
+connectDB();
+
+console.log("Module type:", typeof require);
 
 app.use('/api/user', userRoutes);
 app.use('/api', caseRoutes);
