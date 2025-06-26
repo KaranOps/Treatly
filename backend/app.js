@@ -39,6 +39,9 @@ app.get('/',(req,res)=>{
     console.log("Treatly");
 })
 
+app.all('/*catchall', (req, res) => {
+  res.status(404).send('Not Found');
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(3000, ()=>{
