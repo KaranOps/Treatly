@@ -185,3 +185,39 @@ exports.deleteFile = async (req, res) => {
   }
 };
 
+// Delete a patient case and its files
+exports.deleteCase = async (req, res) => {
+  try {
+    const userId = req.user.id; // From auth middleware
+    const caseId = req.params.caseId;
+
+    // Find the case and ensure it belongs to the logged-in user
+    const patientCase = await Case.findOne({ _id: caseId, user: userId });
+    if (!patientCase) {
+      return res.status(404).json({ message: "Case not found or unauthorized." });
+    }
+
+    // Delete all associated files from disk and DB
+    if (patientCase.files && patientCase.files.length > 0) {
+      for (const fileId of patientCase.files) {
+        const file = await File.findById(fileId);
+        if (file) {
+          // Delete file from disk
+          fs.unlink(file.path, (err) => {
+            if (err) console.error("File deletion error:", err);
+          });
+          // Delete file from DB
+          await File.findByIdAndDelete(fileId);
+        }
+      }
+    }
+
+    // Delete the case itself
+    await Case.findByIdAndDelete(caseId);
+
+    res.status(200).json({ message: "Case and associated files deleted successfully." });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+

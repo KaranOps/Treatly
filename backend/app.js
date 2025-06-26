@@ -18,7 +18,7 @@ app.use('/uploads', express.static('uploads'));
 
 connectDB();
 
-console.log("Module type:", typeof require);
+// console.log("Module type:", typeof require);
 
 app.use('/api/user', userRoutes);
 app.use('/api', caseRoutes);

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const baseURL = import.meta.env.VITE_API_URL; 
+const baseURL = import.meta.env.VITE_API_URL;
 
 const Dashboard = () => {
   const [cases, setCases] = useState([]);
   const [error, setError] = useState("");
+  const [students, setStudents] = useState([]);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -15,7 +16,7 @@ const Dashboard = () => {
         const res = await axios.get(`${baseURL}/api/cases`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        setCases(res.data.cases || res.data); 
+        setCases(res.data.cases || res.data);
       } catch (err) {
         setError("Failed to load cases.");
       }
@@ -23,6 +24,19 @@ const Dashboard = () => {
     fetchCases();
   }, [token]);
 
+  const handleDelete = async (caseId, event) => {
+    event.stopPropagation();
+    if (window.confirm("Delete the student?")) {
+      try {
+        await axios.delete(`${baseURL}/api/case/${caseId}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setStudents((prev) => prev.filter((s) => s._id !== id));
+      } catch (err) {
+        console.error("Error deleting student:", err);
+      }
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
@@ -73,12 +87,13 @@ const Dashboard = () => {
                     {c.summary}
                   </td>
                   <td className="px-3 md:px-6 py-4 text-sm border-b">
-                    <Link 
-                      to={`/cases/${c._id}`} 
+                    <Link
+                      to={`/cases/${c._id}`}
                       className="text-white px-3 md:px-4 py-2 rounded-md text-sm font-medium transition-colors bg-[#5e2d62]"
                     >
                       View Details
                     </Link>
+                    <button onClick={(e) => handleDelete(c._id,e)} className="text-white ml-1.5 px-3 md:px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors bg-[#5e2d62]">Delete</button>
                   </td>
                 </tr>
               ))}
@@ -88,8 +103,8 @@ const Dashboard = () => {
 
         {/* Add New Case Button */}
         <div className="mt-6">
-          <Link 
-            to="/cases/new" 
+          <Link
+            to="/cases/new"
             className="text-white px-4 md:px-6 py-3 rounded-md font-medium transition-colors inline-flex items-center bg-[#532f57] hover:bg-[#2f1b31]"
           >
             + Add New Case

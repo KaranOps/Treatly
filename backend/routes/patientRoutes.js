@@ -11,6 +11,8 @@ router.get('/case/:caseId', auth, patientController.getPatientDetails);
 
 // Update summary of a patient case
 router.put('/case/:caseId/summary', auth, patientController.updateCaseSummary);
+// Delete a patient case
+router.delete('/case/:caseId', auth, patientController.deleteCase);
 
 router.delete('/case/:caseId/files/:fileId', auth, patientController.deleteFile);
 
