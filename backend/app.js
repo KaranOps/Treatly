@@ -12,19 +12,7 @@ const aiRoutes = require("./routes/aiRoutes");
 const app = express();
 
 //MiddleWare
-const corsOptions = {
-  origin: [
-    'http://localhost:5173', // Local development 
-    'https://treatly-uthh.onrender.com', // Your deployed frontend
-  ],
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
-
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); 
+app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
@@ -39,9 +27,6 @@ app.get('/',(req,res)=>{
     console.log("Treatly");
 })
 
-app.all('/*catchall', (req, res) => {
-  res.status(404).send('Not Found');
-});
 
 const PORT = process.env.PORT || 3000;
 app.listen(3000, ()=>{
