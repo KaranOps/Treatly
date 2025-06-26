@@ -176,11 +176,6 @@ All endpoints accept and return JSON unless uploading files (which use multipart
   - Enter voice or text commands
 - Click "Process with AI" to get insights
 
-### 4. **Voice Commands**
-- Click the microphone button 🎤
-- Speak your command (e.g., "Show yesterday's CBC for patient 47321")
-- The transcript will appear in real-time
-- Click stop when finished
 
 ### 5. **Viewing Results**
 - AI results appear in a collapsible JSON format
