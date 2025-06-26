@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
-connectDB();
+await connectDB();
 
 app.use('/api/user', userRoutes);
 app.use('/api', caseRoutes);
