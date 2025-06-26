@@ -12,7 +12,19 @@ const aiRoutes = require("./routes/aiRoutes");
 const app = express();
 
 //MiddleWare
-app.use(cors());
+const corsOptions = {
+  origin: [
+    'http://localhost:5173', // Local development 
+    'https://treatly-uthh.onrender.com', // Your deployed frontend
+  ],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); 
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
