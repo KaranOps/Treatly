@@ -54,10 +54,6 @@
 - **Authentication Middleware**: Protected API endpoints
 - **CORS Configuration**: Proper cross-origin resource sharing setup
 
-## 🌐 Live Demo
-
-- **Frontend**: [https://treatly-uthh.onrender.com](https://treatly-uthh.onrender.com)
-- **Backend API**: [https://treatly-backend.onrender.com](https://treatly-backend.onrender.com)
 
 ## 🚀 Tech Stack
 
