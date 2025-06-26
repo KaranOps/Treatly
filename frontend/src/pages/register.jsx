@@ -24,7 +24,7 @@ const Register = () => {
       );
       setSuccess(true);
       // Optionally redirect to login
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       setError(
         err.response?.data?.message || "Signup failed. Please try again."
@@ -33,7 +33,7 @@ const Register = () => {
   };
 
   const handleLoginClick = () => {
-    navigate("/login");
+    navigate("/");
   };
 
   return (

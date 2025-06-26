@@ -22,7 +22,7 @@ const Login = ({ onLogin }) => {
       localStorage.setItem("token", res.data.token);
       if (onLogin) onLogin(res.data.token);
       // Redirect to dashboard
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       setError(
         err.response?.data?.message || "Login failed. Please try again."

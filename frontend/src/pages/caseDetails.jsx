@@ -13,6 +13,7 @@ import FileManagement from '../components/caseDetailComponents/fileManagement'
 import AIAnalysisForm from '../components/caseDetailComponents/aIAnalysisForm'
 import AIResults from '../components/caseDetailComponents/aIResults'
 
+
 const CaseDetails = () => {
   const { caseId } = useParams();
   const [caseData, setCaseData] = useState(null);
@@ -156,7 +157,7 @@ const CaseDetails = () => {
     }
   };
   const handleGoBack = () => {
-    navigate("/");
+    navigate("/dashboard");
   };
 
   if (loading) {

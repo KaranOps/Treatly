@@ -37,14 +37,14 @@ const AddOrUpdateCase = () => {
           },
         }
       );
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       setError("Failed to create/update case.");
     }
   };
 
   const handleGoBack = () => {
-    navigate("/");
+    navigate("/dashboard");
   };
 
   return (
