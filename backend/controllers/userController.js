@@ -55,7 +55,8 @@ exports.loginUser = async (req, res) => {
         if (!checkPass) return res.json({ success: false, "message": "Password is incorrect" });
 
         let token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-        res.json({ success: true, token, user: { name: user.name } });
+        // console.log(token);
+        return res.json({ success: true, token, user: { name: user.name } });
     } catch (err) {
         console.error(err);
         res.status(501).json({ error: err.message });

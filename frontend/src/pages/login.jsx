@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { toast } from 'react-toastify'
 
 const baseURL = import.meta.env.VITE_API_URL;
 
@@ -19,13 +20,17 @@ const Login = ({ onLogin }) => {
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );
-      localStorage.setItem("token", res.data.token);
-      if (onLogin) onLogin(res.data.token);
-      // Redirect to dashboard
-      navigate("/dashboard");
-    } catch (err) {
+      const data = res.data;
+      if (data.success) {
+        localStorage.setItem("token", res.data.token);
+        if (onLogin) onLogin(res.data.token);
+        navigate("/dashboard");
+      }
+    } catch (error) {
       setError(
-        err.response?.data?.message || "Login failed. Please try again."
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong. Please try again."
       );
     }
   };
@@ -41,7 +46,7 @@ const Login = ({ onLogin }) => {
           <h2 className="text-3xl font-bold text-[#754579] mb-2">Welcome Back</h2>
           <p className="text-[#9f5fa5]">Please sign in to your account</p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-[#754579] mb-2">
@@ -56,7 +61,7 @@ const Login = ({ onLogin }) => {
               required
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-[#754579] mb-2">
               Password
@@ -70,13 +75,13 @@ const Login = ({ onLogin }) => {
               required
             />
           </div>
-          
+
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
               {error}
             </div>
           )}
-          
+
           <button
             type="submit"
             className="w-full bg-[#754579] hover:bg-[#452947] text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 transform hover:scale-105 cursor-pointer"
@@ -84,7 +89,7 @@ const Login = ({ onLogin }) => {
             Sign In
           </button>
         </form>
-        
+
         <div className="mt-6 text-center">
           <p className="text-[#b063b7]">
             Don't have an account?{" "}

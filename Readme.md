@@ -12,7 +12,7 @@
   ![Express.js](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)
   ![Google Gemini](https://img.shields.io/badge/Google%20Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)
   ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
-  [![Deployed on Render](https://img.shields.io/badge/Deployed%20on-Render-46E3B7.svg)](https://treatly-uthh.onrender.com)
+  <!-- [![Deployed on Render](https://img.shields.io/badge/Deployed%20on-Render-46E3B7.svg)](https://treatly-uthh.onrender.com) -->
   <!-- [![API Status](https://img.shields.io/website?url=https%3A//treatly-backend.onrender.com&style=for-the-badge&label=API%20Status)](https://treatly-backend.onrender.com) -->
 
 </div>

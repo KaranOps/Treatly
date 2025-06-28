@@ -17,12 +17,13 @@ const Register = () => {
     setError("");
     setSuccess(false);
     try {
-      await axios.post(
+      const res = await axios.post(
         `${baseURL}/api/user/register`,
         { name, email, password },
         { headers: { "Content-Type": "application/json" } }
       );
       setSuccess(true);
+      localStorage.setItem("token", res.data.token);
       // Optionally redirect to login
       navigate("/dashboard");
     } catch (err) {
