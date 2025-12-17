@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🏥 Treatly - Multimodal Clinical Insight Assistant</h1>
+  <h1>Treatly - Multimodal Clinical Insight Assistant</h1>
   
   <p>
     <strong>A lightweight MERN stack web application that empowers doctors with AI-driven clinical insights through multimodal data fusion</strong>
@@ -18,29 +18,29 @@
 </div>
 
 - **Demo Video:** [Click](https://youtu.be/emnshwGmwjk?si=85nun53j5JAb3-ik) 
-## 🎯 Overview
+## Overview
 
 **Treatly** is a multimodal clinical insight assistant designed to revolutionize how doctors interact with patient data. By combining text summaries, lab reports (CSV/PDF), and medical images (JPG/PNG/DICOM), Treatly leverages Google Gemini AI to provide comprehensive clinical insights including SOAP notes, differential diagnoses, and treatment recommendations.
 
 ### Key Capabilities
 
-- **📝 Case Summary Capture**: Type patient case summaries
-- **📊 Lab Report Analysis**: Upload and process CSV/PDF lab reports
-- **🖼️ Medical Image Processing**: Handle radiology images (JPG/PNG/DICOM)
-- **🎤 Voice Commands**: Request information via spoken commands
-- **🤖 AI-Powered Insights**: Generate structured SOAP notes and clinical recommendations
-- **👩‍⚕️ Doctor Authentication**: Secure login system for healthcare professionals
+- **Case Summary Capture**: Type patient case summaries
+- **Lab Report Analysis**: Upload and process CSV/PDF lab reports
+- **Medical Image Processing**: Handle radiology images (JPG/PNG/DICOM)
+- **Voice Commands**: Request information via spoken commands
+- **AI-Powered Insights**: Generate structured SOAP notes and clinical recommendations
+- **Doctor Authentication**: Secure login system for healthcare professionals
 
-## ✨ Features
+## Features
 
-### 🏥 Clinical Features
+### Clinical Features
 - **Multimodal Data Fusion**: Combines text, lab data, and images for comprehensive analysis
 - **SOAP Note Generation**: Automated creation of Subjective, Objective, Assessment, Plan notes
 - **Differential Diagnoses**: AI-suggested potential diagnoses
 - **Treatment Recommendations**: Evidence-based treatment suggestions
 - **Confidence Scoring**: AI confidence metrics for clinical decisions
 
-### 🛠️ Technical Features
+### Technical Features
 - **Speech-to-Text**: Native Web Speech API integration for voice commands
 - **Real-time Processing**: Live transcript display during voice input
 - **File Management**: Upload and delete patient files
@@ -48,13 +48,13 @@
 - **Secure Authentication**: JWT-based user authentication
 - **Component Architecture**: Modular React components for maintainability
 
-### 🔒 Security & Compliance
+### Security & Compliance
 - **User Isolation**: Each doctor sees only their own cases
 - **Secure File Storage**: Protected file upload and storage system
 - **Authentication Middleware**: Protected API endpoints
 
 
-## 🚀 Tech Stack
+## Tech Stack
 
 ### Frontend
 - **React 19** - Latest React with modern hooks
@@ -83,7 +83,7 @@
 - **Render** - Cloud platform for both frontend and backend
 - **MongoDB Atlas** - Cloud database hosting -->
 
-## 🛠️ Installation
+## Installation
 
 ### Prerequisites
 - Node.js (v18+)
@@ -138,7 +138,7 @@ npm run dev
 ```
 
 
-## 📚 API Reference
+## API Reference
 
 | Endpoint                                 | Method   | Description                                                        |
 |------------------------------------------|----------|--------------------------------------------------------------------|
@@ -155,7 +155,7 @@ npm run dev
 All endpoints require authentication (Authorization: Bearer <token>) unless registering or logging in.
 All endpoints accept and return JSON unless uploading files (which use multipart/form-data).
 
-## 💡 Usage
+## Usage
 
 ### 1. **Doctor Registration & Login**
 - Navigate to the registration page
@@ -182,7 +182,7 @@ All endpoints accept and return JSON unless uploading files (which use multipart
 - View SOAP notes, diagnoses, and recommendations
 - Provide feedback with thumbs up/down buttons
 
-## 📸 Screenshots
+## Screenshots
 
 ### Dashboard
 ![Dashboard](./frontend/public/dashboard.png)
@@ -195,7 +195,7 @@ All endpoints accept and return JSON unless uploading files (which use multipart
 ![Dashboard](./frontend/public/patientCaseDetail3.png)
 *Structured display of AI-generated clinical insights*
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Treatly/
@@ -241,7 +241,7 @@ Treatly/
 
 
 
-## 🙋 About Me
+## About Me
 
 Hi! I’m **Karan** 👋 — a full-stack developer passionate about **AI**, **creativity tools**, and building solutions that solve real-world problems.
 
@@ -252,7 +252,7 @@ Let’s connect on [LinkedIn](https://www.linkedin.com/in/karanops93) or check o
 
 <div align="center">
   <p>
-    <strong>🏥 Empowering Healthcare with AI-Driven Insights</strong>
+    <strong>Empowering Healthcare with AI-Driven Insights</strong>
   </p>
   <p>
     Made with ❤️ for the medical community
