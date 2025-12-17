@@ -8,9 +8,22 @@ import CaseDetails from "./pages/caseDetails";
 import AddOrUpdateCase from "./components/addOrUpdateCase";
 import PrivateRoute from "./components/PrivateRoute";
 
+import { Github } from 'lucide-react';
+
 const App = () => {
   return (
     <BrowserRouter>
+      {/* Global GitHub Floating Button */}
+      <a
+        href="https://github.com/KaranOps/Treatly"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 bg-white p-3 rounded-full shadow-lg border border-purple-100 text-[#754579] hover:scale-110 hover:shadow-purple-200 transition-all duration-300 flex items-center justify-center"
+        aria-label="View on GitHub"
+      >
+        <Github className="w-6 h-6" />
+      </a>
+
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />

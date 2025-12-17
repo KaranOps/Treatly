@@ -10,7 +10,8 @@ import {
     Activity,
     ClipboardCheck,
     ArrowRight,
-    Stethoscope
+    Stethoscope,
+    Github
 } from 'lucide-react';
 import ArchitectureDiagram from '../components/ArchitectureDiagram';
 
@@ -46,6 +47,14 @@ const LandingPage = () => {
                             </span>
                         </div>
                         <div className="flex items-center gap-4">
+                            <a
+                                href="https://github.com/KaranOps/Treatly"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[#754579] hover:text-[#5a355d] transition-colors"
+                            >
+                                <Github className="w-6 h-6" />
+                            </a>
                             <Link
                                 to="/login"
                                 className="text-[#754579] font-medium hover:text-[#5a355d] transition-colors"
@@ -105,7 +114,7 @@ const LandingPage = () => {
                         transition={{ duration: 0.8, delay: 0.6 }}
                     >
                         <button
-                            onClick={() => navigate('/dashboard')}
+                            onClick={() => navigate('/login')}
                             className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-[#754579] rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 hover:bg-[#5a355d] hover:shadow-xl hover:shadow-purple-200/50"
                         >
                             <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black" />
@@ -171,7 +180,7 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            
+
 
             {/* CTA Footer */}
             <section className="py-20 bg-[#754579] text-white text-center relative overflow-hidden">
