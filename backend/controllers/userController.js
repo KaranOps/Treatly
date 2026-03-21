@@ -13,6 +13,14 @@ exports.registerUser = async (req, res) => {
             });
         }
 
+        const existingUser = await userSchema.findOne({email});
+        if(existingUser){
+            return res.status(203).json({
+                success: true,
+                message: "User already exist"
+            });
+        }
+
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
